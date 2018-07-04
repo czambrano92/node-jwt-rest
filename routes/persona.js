@@ -3,7 +3,7 @@ let personaController = require('../controllers/persona');
 
 let api = express.Router();
 
-api.get('/personas', personaController.getPersonas);
+api.get('/persona/:rut', personaController.getPersona);
 
 
 module.exports = api;

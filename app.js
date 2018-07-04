@@ -6,7 +6,8 @@ var app = express();
 
 //carga de rutas
 //ej:
-//var album_routes = require('./routes/album');
+const RUTA_PERSONA = require('./routes/persona');
+const RUTA_COMUNA = require('./routes/comuna');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -23,6 +24,7 @@ app.use((req,res,next)=>{
 });
 //rutas base
 //ej
-//app.use('/api',album_routes);
+app.use('/api',RUTA_PERSONA);
+app.use('/api',RUTA_COMUNA);
 
 module.exports = app;

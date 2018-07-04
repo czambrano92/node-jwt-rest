@@ -1,16 +1,21 @@
-const db = require('./pg-con');
+const db = require('../pg-con');
 
-function getPersonas(req, res) {
-    db.any('select * from urgencia.rol_funcionario where rut_funcionario = $1', '18062538-0')
-        .then(function (data) {
-            console.log(data);
-            res.status(200).send({data});
+function getPersona(req, res) {
+    let rut = req.params.rut;
+    
+    db.any('select * from public.persona where rut = $1',rut)
+        .then(function (persona) {            
+            if(Object.keys(persona).length === 0){
+                res.status(404).send({message: 'Persona no encontrada'});    
+            }else{
+                res.status(200).send(JSON.stringify({persona}));
+            }            
         })
         .catch(function (error) {
-            console.log('error en conexión bd.' + error);
+            res.status(500).send({message: 'Error en el servidor'});
         });
 };
 
 module.exports = {
-    getPersonas
+    getPersona
 }
