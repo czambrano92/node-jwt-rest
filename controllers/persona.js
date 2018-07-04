@@ -5,10 +5,10 @@ function getPersona(req, res) {
     
     db.any('select * from public.persona where rut = $1',rut)
         .then(function (persona) {            
-            if(Object.keys(persona).length === 0){
-                res.status(404).send({message: 'Persona no encontrada'});    
-            }else{
+            if(Object.keys(persona).length != 0){                
                 res.status(200).send(JSON.stringify({persona}));
+            }else{
+                res.status(404).send({message: 'Persona no encontrada'});    
             }            
         })
         .catch(function (error) {

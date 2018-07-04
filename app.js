@@ -8,7 +8,9 @@ var app = express();
 //ej:
 const RUTA_PERSONA = require('./routes/persona');
 const RUTA_COMUNA = require('./routes/comuna');
-
+const RUTA_NIVELINSTRUCCION = require('./routes/nivelinstruccion');
+const RUTA_PUEBLOORIGINARIO = require('./routes/pueblooriginario');
+const RUTA_GRUPOSANGUINEO = require('./routes/gruposanguineo');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -26,5 +28,8 @@ app.use((req,res,next)=>{
 //ej
 app.use('/api',RUTA_PERSONA);
 app.use('/api',RUTA_COMUNA);
+app.use('/api',RUTA_NIVELINSTRUCCION);
+app.use('/api',RUTA_PUEBLOORIGINARIO);
+app.use('/api',RUTA_GRUPOSANGUINEO);
 
 module.exports = app;

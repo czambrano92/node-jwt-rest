@@ -1,14 +1,14 @@
 const db = require('../pg-con');
 
-function getComunas(req, res) {
+function getPueblos(req, res) {
     
     
-    db.any('select * from public.comuna')
-        .then(function (comunas) {            
-            if(!comunas){
+    db.any('select * from public.pueblooriginario')
+        .then(function (pueblos) {            
+            if(!pueblos){
                 res.status(404).send({message: 'comuna no encontrada'});    
             }else{
-                res.status(200).send(JSON.stringify(comunas));
+                res.status(200).send(JSON.stringify(pueblos));
             }            
         })
         .catch(function (error) {
@@ -16,13 +16,13 @@ function getComunas(req, res) {
         });
 };
 
-function getComuna(req, res) {
+function getPueblo(req, res) {
     let id = req.params.id;
     
-    db.any('select * from public.comuna where comunacod = $1',id)
-        .then(function (comuna) {            
-            if(Object.keys(comuna).length != 0){
-                res.status(200).send(JSON.stringify({comuna}));
+    db.any('select * from public.pueblooriginario where pueoricod = $1',id)
+        .then(function (pueblo) {            
+            if(Object.keys(pueblo).length != 0){
+                res.status(200).send(JSON.stringify({pueblo}));
             }else{                
                 res.status(404).send({message: 'Comuna no encontrada'});    
             }            
@@ -33,6 +33,6 @@ function getComuna(req, res) {
 };
 
 module.exports = {
-    getComunas,
-    getComuna
+    getPueblos,
+    getPueblo
 }

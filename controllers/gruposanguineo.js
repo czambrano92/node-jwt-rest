@@ -1,14 +1,14 @@
 const db = require('../pg-con');
 
-function getComunas(req, res) {
+function getGruposSanguineos(req, res) {
     
     
-    db.any('select * from public.comuna')
-        .then(function (comunas) {            
-            if(!comunas){
+    db.any('select * from public.gruposanguineo')
+        .then(function (grupos) {            
+            if(!grupos){
                 res.status(404).send({message: 'comuna no encontrada'});    
             }else{
-                res.status(200).send(JSON.stringify(comunas));
+                res.status(200).send(JSON.stringify(grupos));
             }            
         })
         .catch(function (error) {
@@ -16,13 +16,13 @@ function getComunas(req, res) {
         });
 };
 
-function getComuna(req, res) {
+function getGrupoSanguineo(req, res) {
     let id = req.params.id;
     
-    db.any('select * from public.comuna where comunacod = $1',id)
-        .then(function (comuna) {            
-            if(Object.keys(comuna).length != 0){
-                res.status(200).send(JSON.stringify({comuna}));
+    db.any('select * from public.gruposanguineo where idgruposangre = $1',id)
+        .then(function (grupo) {            
+            if(Object.keys(grupo).length != 0){
+                res.status(200).send(JSON.stringify({grupo}));
             }else{                
                 res.status(404).send({message: 'Comuna no encontrada'});    
             }            
@@ -33,6 +33,6 @@ function getComuna(req, res) {
 };
 
 module.exports = {
-    getComunas,
-    getComuna
+    getGruposSanguineos,
+    getGrupoSanguineo
 }
