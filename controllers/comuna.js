@@ -1,8 +1,6 @@
 const db = require('../pg-con');
 
-function getComunas(req, res) {
-    
-    
+function getComunas(req, res) {        
     db.any('select * from public.comuna')
         .then(function (comunas) {            
             if(!comunas){
