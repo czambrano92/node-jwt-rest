@@ -5,31 +5,68 @@ var bodyParser = require('body-parser');
 var app = express();
 
 //carga de rutas
-//ej:
-const RUTA_PERSONA = require('./routes/persona');
-const RUTA_COMUNA = require('./routes/comuna');
-const RUTA_NIVELINSTRUCCION = require('./routes/nivelinstruccion');
-const RUTA_PUEBLOORIGINARIO = require('./routes/pueblooriginario');
-const RUTA_GRUPOSANGUINEO = require('./routes/gruposanguineo');
 
-app.use(bodyParser.urlencoded({extended: false}));
+const RUTA_AGENDATELEFONICA = require('./routes/atelefonica');
+const RUTA_CADIRECCION = require('./routes/catalogodireccion');
+const RUTA_CATOCUPACIONAL = require('./routes/categoriaocupacional');
+const RUTA_CLAFONASA = require('./routes/clasificacionfonasa');
+const RUTA_CODIRECCION = require('./routes/complementodireccion');
+const RUTA_COMUNA = require('./routes/comuna');
+const RUTA_ESTABLECIMIENTORED = require('./routes/establecimientored');
+const RUTA_ESTADOCIVIL = require('./routes/estadocivil');
+const RUTA_FICHA = require('./routes/fichainstitucional');
+const RUTA_GENERO = require('./routes/genero');
+const RUTA_LIMITE = require('./routes/limiteurbanocensal');
+const RUTA_NIVEL = require('./routes/nivelinstruccion');
+const RUTA_OCUPACION = require('./routes/ocupacion');
+const RUTA_OCUPACIONDET = require('./routes/ocupaciondetallada');
+const RUTA_PAIS = require('./routes/pais');
+const RUTA_PERSONA = require('./routes/persona');
+const RUTA_PROVINCIA = require('./routes/provincia');
+const RUTA_PUEBLO = require('./routes/pueblooriginario');
+const RUTA_REGION = require('./routes/region');
+const RUTA_RELIGION = require('./routes/religionculto');
+const RUTA_SEXO = require('./routes/sexo');
+const RUTA_VIA = require('./routes/via');
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //config cabeceras
-app.use((req,res,next)=>{
-    res.header('Access-Control-Allow-Origin','*');
-    res.header('Access-Control-Allow-Headers','X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method');
-    res.header('Access-Control-Allow-Methods','GET,POST,OPTIONS,PUT,DELETE');
-    res.header('Allow','GET,POST,OPTIONS,PUT,DELETE');
-    
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
+    res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
     next();
 });
+
 //rutas base
-//ej
-app.use('/api',RUTA_PERSONA);
-app.use('/api',RUTA_COMUNA);
-app.use('/api',RUTA_NIVELINSTRUCCION);
-app.use('/api',RUTA_PUEBLOORIGINARIO);
-app.use('/api',RUTA_GRUPOSANGUINEO);
+app.use(RUTA_AGENDATELEFONICA);
+app.use(RUTA_AGENDATELEFONICA);
+app.use(RUTA_CADIRECCION);
+app.use(RUTA_CATOCUPACIONAL);
+app.use(RUTA_CLAFONASA);
+app.use(RUTA_CODIRECCION);
+app.use(RUTA_COMUNA);
+app.use(RUTA_ESTABLECIMIENTORED);
+app.use(RUTA_ESTADOCIVIL);
+app.use(RUTA_FICHA);
+app.use(RUTA_GENERO);
+app.use(RUTA_LIMITE);
+app.use(RUTA_NIVEL);
+app.use(RUTA_OCUPACION);
+app.use(RUTA_OCUPACIONDET);
+app.use(RUTA_PAIS);
+app.use(RUTA_PERSONA);
+app.use(RUTA_PROVINCIA);
+app.use(RUTA_PUEBLO);
+app.use(RUTA_REGION);
+app.use(RUTA_RELIGION);
+app.use(RUTA_SEXO);
+app.use(RUTA_VIA);
+
+
+
 
 module.exports = app;

@@ -1,7 +1,7 @@
 const db = require('../pg-con');
 
 function getNivelesInstruccion(req, res) {        
-    db.any('select * from public.nivelinstruccion')
+    db.any('select * from public.nivel_instruccion')
         .then(function (niveles) {            
             if(!niveles){
                 res.status(404).send({message: 'comuna no encontrada'});    
@@ -17,7 +17,7 @@ function getNivelesInstruccion(req, res) {
 function getNivelInstruccion(req, res) {
     let id = req.params.id;
     
-    db.any('select * from public.nivelinstruccion where nivelcod = $1',id)
+    db.any('select * from public.nivel_instruccion where codigo = $1',id)
         .then(function (nivelinstruccion) {            
             if(Object.keys(nivelinstruccion).length != 0){
                 res.status(200).send(JSON.stringify({nivelinstruccion}));                

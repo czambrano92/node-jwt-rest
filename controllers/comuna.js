@@ -17,7 +17,7 @@ function getComunas(req, res) {
 function getComuna(req, res) {
     let id = req.params.id;
     
-    db.any('select * from public.comuna where comunacod = $1',id)
+    db.any('select * from public.comuna where codigo = $1',id)
         .then(function (comuna) {            
             if(Object.keys(comuna).length != 0){
                 res.status(200).send(JSON.stringify({comuna}));
@@ -30,22 +30,22 @@ function getComuna(req, res) {
         });
 };
 
-function saveComuna(req,res){    
-    let params = req.body;
+// function saveComuna(req,res){    
+//     let params = req.body;
         
-    db.one('INSERT INTO "public"."comuna" ("comunacod", "ciudadcod", "comunadesc") VALUES ($1,$2,$3) RETURNING *',[params.comunacod,params.ciudadcod,params.comunadesc])
-    .then(data => {        
-        res.status(200).send(JSON.stringify({data}));
-        console.log("success");
-    })
-    .catch(error => {
-        res.status(500).send({message: 'Error en el servidor'});
-        console.log("error" + error);
-    });    
-};
+//     db.one('INSERT INTO "public"."comuna" ("comunacod", "ciudadcod", "comunadesc") VALUES ($1,$2,$3) RETURNING *',[params.comunacod,params.ciudadcod,params.comunadesc])
+//     .then(data => {        
+//         res.status(200).send(JSON.stringify({data}));
+//         console.log("success");
+//     })
+//     .catch(error => {
+//         res.status(500).send({message: 'Error en el servidor'});
+//         console.log("error" + error);
+//     });    
+// };
 
 module.exports = {
     getComunas,
-    getComuna,
-    saveComuna
+    getComuna
+    //saveComuna
 }

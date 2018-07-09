@@ -3,8 +3,8 @@ let nivelinstruccionController = require('../controllers/nivelinstruccion');
 
 let api = express.Router();
 
-api.get('/nivelesinstruccion', nivelinstruccionController.getNivelesInstruccion);
-api.get('/nivelesinstruccion/:id', nivelinstruccionController.getNivelInstruccion);
+api.get('/nivelinstruccion', nivelinstruccionController.getNivelesInstruccion);
+api.get('/nivelinstruccion/:id', nivelinstruccionController.getNivelInstruccion);
 
 
 module.exports = api;
