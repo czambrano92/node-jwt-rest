@@ -3,6 +3,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
+var jwt = require('jsonwebtoken');
+const secret = 'ilovecesar';
 
 //carga de rutas
 
@@ -28,9 +30,13 @@ const RUTA_REGION = require('./routes/region');
 const RUTA_RELIGION = require('./routes/religionculto');
 const RUTA_SEXO = require('./routes/sexo');
 const RUTA_VIA = require('./routes/via');
+const RUTA_SERVER = require('./routes/server');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
 
 //config cabeceras
 app.use((req, res, next) => {
@@ -38,11 +44,45 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method');
     res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
     res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
-    next();
+     next();
 });
 
+app.use(RUTA_SERVER);
+
+
+ app.use((req, res, next) => {
+     // check header or url parameters or post parameters for token
+     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+     // decode token
+     if (token) {
+  
+       // verifies secret and checks exp
+       jwt.verify(token, 'ilovecesar', function(err, decoded) {      
+         if (err) {
+           return res.json({ success: false, message: 'Failed to authenticate token.' });    
+         } else {
+           // if everything is good, save to request for use in other routes
+           req.decoded = decoded;    
+           next();
+         }
+       });
+  
+     } else {
+  
+       // if there is no token
+       // return an error
+       return res.status(403).send({ 
+           success: false, 
+           message: 'No token provided.' 
+       });
+  
+     }
+ });
+
+
+
 //rutas base
-app.use(RUTA_AGENDATELEFONICA);
 app.use(RUTA_AGENDATELEFONICA);
 app.use(RUTA_CADIRECCION);
 app.use(RUTA_CATOCUPACIONAL);
@@ -65,6 +105,11 @@ app.use(RUTA_REGION);
 app.use(RUTA_RELIGION);
 app.use(RUTA_SEXO);
 app.use(RUTA_VIA);
+
+
+
+
+
 
 
 
