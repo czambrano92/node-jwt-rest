@@ -3,18 +3,14 @@ var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const superSecret = 'ilovecesar';
 
 function getAuthentication(req,res){
-    let usuario = req.body.usuario;
+    let rut = req.body.rut;
     //let password = req.body.password;
     
-    db.any('select * from public.usuario where usuario = $1',usuario)
-        .then(function (data) {            
-            console.log('ke pasaaaaa');
+    db.any('select * from control_acceso.usuario where rut = $1',rut)
+        .then(function (data) {                        
             if(Object.keys(data).length != 0){
-                nueo = JSON.stringify(data);
-                console.log('PASSWORD >>> ' + data[0].password);
-                
-                
-                if (data[0].password != req.body.password) {
+                nueo = JSON.stringify(data);                                
+                if (data[0].clave != req.body.clave) {
                     res.json({ success: false, message: 'Authentication failed. Wrong password.' });
                   } else {
             
@@ -26,23 +22,23 @@ function getAuthentication(req,res){
                   admin:true
                 };
                     var token = jwt.sign(payload, superSecret, {
-                      expiresIn : 60*60*24
+                      expiresIn : 60*15
                     });
             
                     // return the information including token as JSON
                     res.json({
                       success: true,
                       message: 'Enjoy your token!',
+                      usuario: data[0].usuario,
                       token: token
                     });
                   }
             }else{                
-                res.status(404).send({message: 'USUARIO no encontrada'});    
+                res.status(404).send({success: false,message: 'USUARIO no encontrado'});    
             }            
         })
-        .catch(function (error) {
-            console.log('ke pasooooooo');
-            res.status(500).send({message: 'Error en el servidor ' + error});
+        .catch(function (error) {            
+            res.status(500).send({success: false,message: 'Error en el servidor ' + error});
         });    
 };
 

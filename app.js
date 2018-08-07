@@ -40,45 +40,55 @@ app.use(bodyParser.json());
 
 //config cabeceras
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
-    res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
-     next();
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-API-KEY, Origin, X-Requested-With, Content-Type, Access-Control-Request-Method,token,authorization,x-access-token,Authorization, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
+  res.header('Allow', 'GET,POST,OPTIONS,PUT,DELETE');
+  next();
 });
 
 app.use(RUTA_SERVER);
 
 
- app.use((req, res, next) => {
-     // check header or url parameters or post parameters for token
-     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+app.use((req, res, next) => {
 
-     // decode token
-     if (token) {
-  
-       // verifies secret and checks exp
-       jwt.verify(token, 'ilovecesar', function(err, decoded) {      
-         if (err) {
-           return res.json({ success: false, message: 'Failed to authenticate token.' });    
-         } else {
-           // if everything is good, save to request for use in other routes
-           req.decoded = decoded;    
-           next();
-         }
-       });
-  
-     } else {
-  
-       // if there is no token
-       // return an error
-       return res.status(403).send({ 
-           success: false, 
-           message: 'No token provided.' 
-       });
-  
-     }
- });
+  // check header or url parameters or post parameters for token     
+  //var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (req.body.token != undefined) {
+    var token = req.body.token;
+  } else if (req.query.token != undefined) {
+    var token = req.query.token;
+  } else if (req.headers['x-access-token'] != undefined) {
+    var token = req.headers['x-access-token'];
+  }
+
+  console.log('tokeeen ' + token);
+
+  // decode token
+  if (token) {
+    // verifies secret and checks exp
+    jwt.verify(token, 'ilovecesar', function (err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        next();
+      }
+    });
+
+  } else {
+
+    // if there is no token
+    // return an error
+
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+
+  }
+});
 
 
 
