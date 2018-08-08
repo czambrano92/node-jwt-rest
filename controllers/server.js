@@ -19,7 +19,9 @@ function getAuthentication(req,res){
                 // we don't want to pass in the entire user since that has the password
                 const payload = {
                   //admin: user.admin 
-                  admin:true
+                  admin:true,
+                  user: data[0].id,
+                  rut: data[0].rut
                 };
                     var token = jwt.sign(payload, superSecret, {
                       expiresIn : 60*15

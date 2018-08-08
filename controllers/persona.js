@@ -63,22 +63,21 @@ function savePersona(req, res) {
 function getPersonaByIdentificador(req, res) {
     console.log('get persona by id')
     let uid = req.params.uid;
-    let tipoDoc = parseInt(req.params.identificador, 10)
+    let identificador = req.params.identificador
+    let datos = identificador.split('-')
+    console.log("uid " + uid)
     let sql = ""
-    switch (tipoDoc) {
-        case 1:
-            console.log('rut')
-            let datos = uid.split('-')
-            sql = "select * from public.persona where run =" + datos[0] + " and digito_verificador = '" + datos[1] + "'"
-            console.log(sql)
-            break
-        case 2:
-            sql = "select * from public.persona where pasaporte = '" + uid + "' "
-            break
-        case 3:
-            sql = "select * from public.persona where rut_provisorio_fonasa = '" + uid + "' "
-            break
+    if (uid == 1) {
+        console.log('rut')
+        sql = "select * from public.persona where run =" + datos[0] + " and digito_verificador = '" + datos[1] + "'"
+    } else {
+        if (uid == 2) {
+            sql = "select * from public.persona where pasaporte = '" + identificador + "' "
+        } else {
+            sql = "select * from public.persona where rut_provisorio_fonasa = '" + identificador + "' "
+        }
     }
+    console.log("sql " + sql)
     db.one(sql)
         .then(function (persona) {
             if (Object.keys(persona).length != 0) {
@@ -90,7 +89,7 @@ function getPersonaByIdentificador(req, res) {
         })
         .catch(function (error) {
             res.status(500).send({ message: 'Error en el servidor' });
-        });
+        })
 };
 
 
