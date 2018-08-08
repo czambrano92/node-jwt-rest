@@ -78,17 +78,22 @@ function getPersonaByIdentificador(req, res) {
         }
     }
     console.log("sql " + sql)
-    db.one(sql)
+    db.any(sql)
         .then(function (persona) {
             if (Object.keys(persona).length != 0) {
                 console.log(persona)
-                res.status(200).send(JSON.stringify({ persona }));
+                res.status(200).send(JSON.stringify({ 
+                    persona,
+                    encontrado: true                    
+                 }));
             } else {
-                res.status(404).send({ message: 'Persona no encontrada' });
+                res.status(200).send(JSON.stringify({ 
+                    message: 'Persona no encontrada',
+                    encontrado: false }));
             }
         })
         .catch(function (error) {
-            res.status(500).send({ message: 'Error en el servidor' });
+            res.status(500).send({ message: 'Error en el servidor , error 500' });
         })
 };
 

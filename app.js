@@ -47,31 +47,29 @@ app.use((req, res, next) => {
   next();
 });
 
+//rutas que no requieren token
 app.use(RUTA_SERVER);
 
 
 app.use((req, res, next) => {
 
-  // check header or url parameters or post parameters for token     
-  //var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  // obtener token desde url, body o header
   if (req.body.token != undefined) {
     var token = req.body.token;
   } else if (req.query.token != undefined) {
     var token = req.query.token;
   } else if (req.headers['x-access-token'] != undefined) {
     var token = req.headers['x-access-token'];
-  }
-
-  console.log('tokeeen ' + token);
+  }  
 
   // decode token
   if (token) {
-    // verifies secret and checks exp
+    // verifica palabra secreta y tiempo de expiracion
     jwt.verify(token, 'ilovecesar', function (err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });
+        return res.json({ success: false, message: 'Falló el token, no se reconoce.' });
       } else {
-        // if everything is good, save to request for use in other routes
+        // si todo queda bien , almacenar el request para proximas validaciones        
         req.decoded = decoded;
         next();
       }
@@ -79,12 +77,10 @@ app.use((req, res, next) => {
 
   } else {
 
-    // if there is no token
-    // return an error
-
+    // si no encuentra token devuelve el error y un mensaje
     return res.status(403).send({
       success: false,
-      message: 'No token provided.'
+      message: 'No se ha entregado ningun token.'
     });
 
   }
@@ -92,7 +88,7 @@ app.use((req, res, next) => {
 
 
 
-//rutas base
+//rutas base que requieren token
 app.use(RUTA_AGENDATELEFONICA);
 app.use(RUTA_CADIRECCION);
 app.use(RUTA_CATOCUPACIONAL);

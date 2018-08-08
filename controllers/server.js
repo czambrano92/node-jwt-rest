@@ -3,31 +3,29 @@ var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 const superSecret = 'ilovecesar';
 
 function getAuthentication(req,res){
-    let rut = req.body.rut;
-    //let password = req.body.password;
+    //recibe rut y clave por el body en un post
+    let rut = req.body.rut;    
     
     db.any('select * from control_acceso.usuario where rut = $1',rut)
         .then(function (data) {                        
-            if(Object.keys(data).length != 0){
-                nueo = JSON.stringify(data);                                
+            if(Object.keys(data).length != 0){                
+                /// verifica contraseña
                 if (data[0].clave != req.body.clave) {
-                    res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                    res.json({ success: false, message: 'Autenticacion fallida, clave erronea.' });
                   } else {
-            
-                    // if user is found and password is right
-                    // create a token with only our given payload
-                // we don't want to pass in the entire user since that has the password
-                const payload = {
-                  //admin: user.admin 
+                // si es valida la credencial            
+                //completar datos a gusto
+                const payload = {                  
                   admin:true,
                   user: data[0].id,
                   rut: data[0].rut
                 };
+                // crear token
                     var token = jwt.sign(payload, superSecret, {
                       expiresIn : 60*15
                     });
             
-                    // return the information including token as JSON
+                    // retorna la información y el token como json
                     res.json({
                       success: true,
                       message: 'Enjoy your token!',
